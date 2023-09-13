@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../bootstrap-5.1.3-dist/css/bootstrap.css">
+</head>
+<body onload="printTransactionReceipt()">
+  <div class=" p-3 ">
+      <h3 class="text-center">TRANSACTION RECEIPT</h3>
+      <p class="text-center"><small>Generated from <span class="text-warning">OTB</span>ank on</small> <small id="trnDate"></small></p>
+      <hr>
+
+      <div class="row mt-3 justify-content-center">
+          <p class="text-danger  col-5"> Transaction Amount</p>
+          <p id="trnAmt" class="text-primary  col-6 "></p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger  col-5">Transaction Type</p>
+          <p class="text-primary col-6">INTRA-BANK FUNDS TRANSFER</p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger  col-5">Transaction Date</p>
+          <p id="trnDate2" class="text-primary col-6"></p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger  col-5">Sender</p>
+          <p id="trnSender" class="text-primary col-6"></p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger col-5">Beneficiary</p>
+          <p id="trnRec" class="text-primary col-6 "></p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger col-5">Beneficiary Account</p>
+          <p id="trnAcct" class="text-primary col-6 "></p>
+      </div>
+      <hr>
+      <div class="row  justify-content-center">
+          <p class="text-danger col-5">Remark</p>
+          <p id="trnDescr" class="text-primary col-6"></p>
+      </div>
+  </div>
+  <div class="mt-3 text-center">
+    <a href="../dashboard.html" class="btn btn-success text-light text-decoration-none">Proceed</a>
+    <a href="../dashboard.html" class="btn btn-danger text-light text-decoration-none">Cancel</a>
+   </div>
+  <script>
+    function printTransactionReceipt() {
+      let allUsers = JSON.parse(localStorage.getItem("bankUsers"))
+      let currentUser = localStorage.getItem("currentLogin")
+      let currentLoginIndex = allUsers.filter(u => u.signUpEmail == currentUser)
+      // let acctNoInp = userAcctNo.value
+      // let transferIndex = allUsers.findIndex(u => u.forAcctNo == acctNoInp)
+      // console.log(currentLoginIndex);
+      // console.log(currentLoginIndex);
+      // let lastArr = 
+      let cominDe;
+      // console.log(currentLoginIndex);
+      if(currentLoginIndex){
+
+      }
+      for(let i = 0; i < currentLoginIndex.length; i++){
+        cominDe = currentLoginIndex[i].transaction.slice(-1)
+        console.log(cominDe);
+      }
+      
+      cominDe.map((item, index) =>{
+        trnAmt.innerText = item.amtFund;
+        trnDate2.innerText = item.dateFund
+        trnSender.innerText = `${currentLoginIndex[index].signUpFirstname} ${currentLoginIndex[index].signUpLastname}`
+        trnRec.innerText = item.beneficiary
+        trnAcct.innerText = item.beneficiaryAcct
+        trnAcct.innerText = item.beneficiaryAcct
+        trnDescr.innerText = item.remark
+      })
+
+
+    }
+  </script>
+  <script src="../bootstrap-5.1.3-dist/js/bootstrap.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="./bootstrap-5.1.3-dist/css/bootstrap.css" /> -->
+  <link rel="stylesheet" href="airtime-purchase.css">
+  <link rel="stylesheet" href="../bootstrap-5.1.3-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../generalJsFile.js">
+</head>
+<body>
+  <div id="airtimeBox" class="text-light w-50 m-auto mt-5 py-5">
+      <h1 class="fs-4 text-center">Purchase Airtime</h1>
+      <hr>
+            <div class="text-start p-0 m-0">
+              <h6 class="fw-normal fs-5 text-warning text-center">Click to select your desire airtime type:</h6>
+              <ol class="px-5 p-0 m-0 lh-lg">
+                <a href="#mySelf" class=" text-decoration-none text-light">
+                  <li id="airtimeSelf" class="fs-5 p-0 m-0">Airtime-self</li>
+                </a>
+                <a href="#other" class=" text-decoration-none text-light ">
+                  <li id="airtimeOther" class="fs-5 p-0 m-0">Airtime-other</li>
+                </a>
+                <a href="#sub" class=" text-decoration-none text-light">
+                  <li id="subscription" class="fs-5 p-0 m-0">Subscription</li>
+                </a>
+              </ol>
+            </div>
+            <hr>
+            <div class="selfAir m-0 " id="mySelf" style="display: none;">
+         <div class="text-center py-">
+        <input type="number" name="" id="selfNumAir" class="form-control" placeholder="Enter The Amount">
+       <div class="mt-3">
+        <a href="" class="btn btn-success  mx-2 text-decoration-none" onclick="purchaseSelfAirtime()">Proceed</a>
+        <a href="./airtime-purchase.html" class="btn btn-danger text-light text-decoration-none">Cancel</a>
+       </div>
+      </div>
+    </div>
+    <div class="selfAir m-0 px-5" id="other" style="display: none;">
+      <input type="number" name="" id="partyNumAir" class="form-control mb-2" placeholder="Please enter 3rd party's mobile number">
+      <input type="number" name="" id="partyAirAmt" class="form-control mb-2" placeholder="Enter Amount">
+      <select name="for Airtime" id="networkSelect" class="form-control">
+        <option value="mtn">SELECT NETWORK PROVIDER</option>
+        <option value="mtn">MTN</option>
+        <option value="mtn">AIRTEL</option>
+        <option value="mtn">GLO</option>
+        <option value="mtn">ETiSALAT</option>
+      </select>
+      <div class="mt-2 text-center">
+        <a href="" class="btn btn-success  mx-2 text-decoration-none" onclick="purchaseOtherAirtime()">Proceed</a>
+      <a href="./airtime-purchase.html" class="btn btn-danger text-light text-decoration-none">Cancel</a>
+    </div>
+  </div>
+  <hr>
+  <div class="text-center">
+    <a href="../dashboard.html" class="btn btn-dark text-light text-decoration-none">Go back</a>
+  </div>
+    <!-- <button class="btn btn-primary fw-bold" onclick="loginUser()">Login</button> -->
+  </div>
+  <script>
+    const purchaseSelfAirtime = () =>{
+      let withdraw = selfNumAir.value; 
+      let allUsers = JSON.parse(localStorage.getItem("bankUsers"))
+      let currentUser = localStorage.getItem("currentLogin")
+      let currentUserIndex = allUsers.findIndex(u => u.signUpEmail == currentUser)
+      
+      // let check = allUsers.findIndex(u => u.signUpEmail == currentUser)
+      if(currentUser){
+        if(selfNumAir.value == ''){
+          alert("Input the amount")
+        }else{
+          let userPinConfirm = prompt(`Enter your Pin to complete $${withdraw} airtime`)
+              // alert("ever")
+            if(allUsers[currentUserIndex].userTransactionPIN == userPinConfirm){
+              if(allUsers[currentUserIndex].accountBalance < Number(withdraw)){
+                alert("you have insufficient balance")
+              }else{
+                allUsers[currentUserIndex].accountBalance -= Number(withdraw)
+                let dateAdd = new Date()
+                let timeAdd = new Date()
+                let addFund = {
+                  transType: "Debit",
+                  amtFund: `${withdraw}`,
+                  avaiBal: `${allUsers[currentUserIndex].accountBalance}`,
+                  discript:  "Airtime Purchase",
+                  dateFund: dateAdd.toLocaleDateString(),
+                  timeFund: timeAdd.toLocaleTimeString() 
+                }
+                console.log(addFund);
+                // accountHistory = allHisLoca
+                let tranHis = allUsers[currentUserIndex].transaction
+        
+                tranHis.push(addFund)
+                localStorage.setItem("bankUsers", JSON.stringify(allUsers))
+                localStorage.setItem("bankUsers", JSON.stringify(allUsers))
+                // selfNumAir.value = "";
+                // mySelf.style.display = "block"
+                alert("You have successfully bought $" + withdraw + " Airtime Press 'OK' Button to  continue")
+                withdrawAmt.focus()
+                console.log(allUsers[currentUserIndex]);
+        
+              }
+              
+            }else{
+              alert("Not corret pin")
+            }
+      }
+      }
+    }
+    const purchaseOtherAirtime = () =>{
+      let withdraw = partyAirAmt.value;
+      let withdPartyNum = partyNumAir.value 
+      let allUsers = JSON.parse(localStorage.getItem("bankUsers"))
+      let currentUser = localStorage.getItem("currentLogin")
+      let currentUserIndex = allUsers.findIndex(u => u.signUpEmail == currentUser)
+      
+      // let check = allUsers.findIndex(u => u.signUpEmail == currentUser)
+      if(currentUser){
+        if(partyNumAir.value == '' || partyAirAmt.value == "" || networkSelect == ""){
+          alert("Complete the 3rd party's transaction details")
+        }else{
+          let userPinConfirm = prompt(`Enter your Pin to complete $${withdraw} airtime`)
+              // alert("ever")
+            if(allUsers[currentUserIndex].userTransactionPIN == userPinConfirm){
+              if(allUsers[currentUserIndex].accountBalance < Number(withdraw)){
+                alert("you have insufficient balance")
+              }else{
+                allUsers[currentUserIndex].accountBalance -= Number(withdraw)
+                let dateAdd = new Date()
+                let timeAdd = new Date()
+                let addFund = {
+                  transType: "Debit",
+                  amtFund: `${withdraw}`,
+                  avaiBal: `${allUsers[currentUserIndex].accountBalance}`,
+                  discript:  `You sent airtime to ${withdPartyNum} `,
+                  dateFund: dateAdd.toLocaleDateString(),
+                  timeFund: timeAdd.toLocaleTimeString() 
+                }
+                console.log(addFund);
+                // accountHistory = allHisLoca
+                let tranHis = allUsers[currentUserIndex].transaction
+        
+                tranHis.push(addFund)
+                localStorage.setItem("bankUsers", JSON.stringify(allUsers))
+                // selfNumAir.value = "";
+                // mySelf.style.display = "block"
+                alert(`You have successfully sent $${withdraw} Airtime to ${withdPartyNum} Press 'OK' Button to continue`)
+                withdrawAmt.focus()
+                console.log(allUsers[currentUserIndex]);
+        
+              }
+              
+            }else{
+              alert("Not corret pin")
+            }
+      }
+      }
+    }
+
+    document.getElementById("airtimeSelf").addEventListener("click", function(){
+      mySelf.style.display = "block"
+      airtimeOther.style.display = "none"
+      subscription.style.display = "none"
+    })
+    document.getElementById("airtimeOther").addEventListener("click", function(){
+      other.style.display = "block"
+      airtimeSelf.style.display = "none"
+      subscription.style.display = "none"
+    })
+  </script>
+  <script src="../bootstrap-5.1.3-dist/js/bootstrap.js"></script>
+</body>
+</html>
